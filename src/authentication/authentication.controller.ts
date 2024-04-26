@@ -8,7 +8,11 @@ export class AuthenticationController {
 
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+    const result = await this.authService.register(registerDto);
+    if (result.error) {
+      throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
+    }
+    return result.data;
   }
 
   @Post('login')

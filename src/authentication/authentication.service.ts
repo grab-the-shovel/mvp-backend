@@ -4,14 +4,23 @@ import { supabase } from '../config/supabase.client';
 
 @Injectable()
 export class AuthenticationService {
-  async register(registerDto: RegisterDto): Promise<any> {
-    const { email, password } = registerDto;
-    const { data, error } = (await supabase.auth.signUp({
-      email,
-      password,
-    })) as { data: { user: any }; error: any };
-    if (error) throw new Error(error.message);
-    return data.user;
+  async register(
+    registerDto: RegisterDto,
+  ): Promise<{ data: any; error: boolean; message?: string }> {
+    try {
+      const { email, password } = registerDto;
+      const { user, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        return { data: null, error: true, message: error.message };
+      }
+      return { data: user, error: false };
+    } catch (err) {
+      return { data: null, error: true, message: err.message };
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
