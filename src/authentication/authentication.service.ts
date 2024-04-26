@@ -15,6 +15,13 @@ export class AuthenticationService {
       });
 
       if (error) {
+        if (error.message.includes('Email rate limit exceeded')) {
+          return {
+            data: null,
+            error: true,
+            message: 'Email rate limit exceeded. Please try again later.',
+          };
+        }
         return {
           data: null,
           error: true,
