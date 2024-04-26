@@ -4,16 +4,13 @@ import { supabase } from '../config/supabase.client';
 
 @Injectable()
 export class AuthenticationService {
-  async register(
-    registerDto: RegisterDto,
-  ): Promise<{ data: any; error: boolean; message?: string }> {
+  async register(registerDto: RegisterDto): Promise<{ data: any; error: boolean; message?: string }> {
     try {
       const { email, password } = registerDto;
-      const { user, error } = await supabase.auth.signUp({
+      const { data: user, error } = await supabase.auth.signUp({
         email,
         password,
       });
-
       if (error) {
         if (error.message.includes('Email rate limit exceeded')) {
           return {
