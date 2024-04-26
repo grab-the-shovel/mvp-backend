@@ -1,8 +1,17 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseFilters,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { LoginDto, RegisterDto, ResetPasswordDto } from './dto';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 
 @Controller('auth')
+@UseFilters(new HttpExceptionFilter())
 export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
 

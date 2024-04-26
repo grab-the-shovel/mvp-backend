@@ -15,11 +15,19 @@ export class AuthenticationService {
       });
 
       if (error) {
-        return { data: null, error: true, message: error.message };
+        return {
+          data: null,
+          error: true,
+          message: `Registration failed: ${error.message}`,
+        };
       }
       return { data: user, error: false };
     } catch (err) {
-      return { data: null, error: true, message: err.message };
+      return {
+        data: null,
+        error: true,
+        message: `Server error: ${err.message}`,
+      };
     }
   }
 
