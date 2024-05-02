@@ -16,10 +16,10 @@ export class AuthenticationController {
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async register(@Body() registerDto: RegisterDto) {
     const result = await this.authService.register(registerDto);
-    if (result.error) {
-      throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
+    if (!result) {
+      throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST);
     }
-    return result.data;
+    return result;
   }
 
   @Post('login')

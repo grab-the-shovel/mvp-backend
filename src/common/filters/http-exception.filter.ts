@@ -7,12 +7,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    const exceptionResponse = exception.getResponse();
+    const exceptionResponse = exception.getResponse() || { message: 'Unexpected error occurred' };
 
     response.status(status).json({
       statusCode: status,
       error: true,
-      message: (exceptionResponse as any).message || 'Unexpected error occurred',
+      message: (exceptionResponse as any).message,
     });
   }
 }

@@ -5,6 +5,9 @@ import { supabase } from '../config/supabase.client';
 @Injectable()
 export class AuthenticationService {
   async register(registerDto: RegisterDto): Promise<any> {
+    if (!registerDto.email || !registerDto.password) {
+      throw new HttpException('Email and password are required', HttpStatus.BAD_REQUEST);
+    }
     try {
       const { email, password } = registerDto;
       const { data: user, error } = await supabase.auth.signUp({
