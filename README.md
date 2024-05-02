@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project was developed using [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
 
@@ -58,11 +58,18 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Support
+
+## Swagger Documentation
+
+Access the Swagger API documentation by navigating to `http://localhost:3000/api-docs` in your browser after starting the application in development mode. This documentation provides an interactive way to test and explore the API endpoints.
+
+## Authentication
+
+This project uses Supabase for authentication. Ensure you have set up your Supabase project and configured the necessary environment variables for integration.
+
+## Support Nest
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
 
 - Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
 - Website - [https://nestjs.com](https://nestjs.com/)

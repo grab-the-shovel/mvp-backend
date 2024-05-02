@@ -1,14 +1,25 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseFilters, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { LoginDto, RegisterDto, ResetPasswordDto } from './dto';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
+@UseFilters(new HttpExceptionFilter())
 export class AuthenticationController {
   constructor(private readonly authService: AuthenticationService) {}
 
   @Post('register')
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiResponse({ status: 201, description: 'User registered successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
   async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+    const result = await this.authService.register(registerDto);
+    if (!result) {
+      throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
   @Post('login')
