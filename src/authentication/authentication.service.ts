@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { LoginDto, RegisterDto, ResetPasswordDto } from './dto';
 import { supabase } from '../config/supabase.client';
 
 @Injectable()
 export class AuthenticationService {
-  async register(registerDto: RegisterDto): Promise<{ data: any; error: boolean; message?: string }> {
+  async register(registerDto: RegisterDto): Promise<any> {
     try {
       const { email, password } = registerDto;
       const { data: user, error } = await supabase.auth.signUp({
@@ -12,26 +12,11 @@ export class AuthenticationService {
         password,
       });
       if (error) {
-        if (error.message.includes('Email rate limit exceeded')) {
-          return {
-            data: null,
-            error: true,
-            message: 'Email rate limit exceeded. Please try again later.',
-          };
-        }
-        return {
-          data: null,
-          error: true,
-          message: `Registration failed: ${error.message}`,
-        };
+        throw new HttpException(`Registration failed: ${error.message}`, HttpStatus.BAD_REQUEST);
       }
-      return { data: user, error: false };
+      return user;
     } catch (err) {
-      return {
-        data: null,
-        error: true,
-        message: `Server error: ${err.message}`,
-      };
+      throw new HttpException(`Server error: ${err.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
